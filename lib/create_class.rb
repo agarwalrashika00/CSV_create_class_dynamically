@@ -1,25 +1,14 @@
-require_relative '../bin/persons.rb'
+# require_relative '../bin/persons.rb'
 
 class CreateClass
-  attr_accessor :class_name
-  def initialize(file, class_name)
-    @file = file
-    @class_name = class_name.capitalize
+  def initialize(class_name)
+    @class_name = Object.const_set(class_name.capitalize, Class.new)
   end
 
-  def create_class
-    @file.puts(%{
-  class #{@class_name} 
-  end
-    })
-  end
-   
-  def add_accessor_methods(attr_names)
-    @file.puts(%{
-  class #{@class_name}
-    attr_accessor *#{attr_names}
-  end
-  })
+  def add_accessor_methods(attr)
+    @class_name.class_eval do
+      attr_accessor attr
+    end
   end
 
   def create_instance
