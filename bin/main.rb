@@ -1,15 +1,10 @@
 require 'csv'
-require_relative '../lib/create_class.rb'
-require_relative '../lib/csv_operations.rb'
+require_relative '../lib/dynamic_class.rb'
 
 csv_files =  Dir.glob("bin/*.csv")
 csv_files.each do |csv_file|
-  file_name = csv_file.split(/[\/\.]/)[1]
-  
-  csv_operations = CSVOperations.new("#{File.dirname(__FILE__)}/#{file_name}.csv")
-  csv_operations.create_class(file_name)
-  csv_operations.add_accessor_methods
-  obj_array = csv_operations.create_objects
-  obj_array.each{|obj| p obj}
+  file_name = File.basename(csv_file).split('.')[0]
+  dynamic_class = DynamicClass.new("#{File.dirname(__FILE__)}/#{file_name}.csv", file_name)
+  p file_name
+  p dynamic_class.create_instances_dynamically
 end
-
